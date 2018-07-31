@@ -1,10 +1,7 @@
 FactoryBot.define do
-  sequence(:title) { |n| "QuestionTitle#{n}" }
-  sequence(:body) { |n| "QuestionBody#{n}" }
-
   factory :question do
-    title
-    body
+    sequence(:title) { |n| "QuestionTitle#{n}" }
+    sequence(:body) { |n| "QuestionBody#{n}" }
   end
 
   factory :invalid_question, class: 'Question' do
