@@ -1,2 +1,12 @@
-p= @question.title
+h3= @question.title
 p= @question.body
+
+ul.answers
+  - @question.answers.each do |answer|
+    li
+      p = answer.body
+
+= form_with model: [@question, @answer], local: true do |f|
+  = f.label :body
+  = f.text_area :body
+  = f.submit 'Reply'

@@ -84,6 +84,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     sign_in_user
+    let(:old_question) { question }
 
     context 'valid attributes' do
       it 'assigns the requested question to @question' do
@@ -109,8 +110,8 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'does not change question attributes' do
         question.reload
-        expect(question.title).to eq 'MyString'
-        expect(question.body).to eq 'MyText'
+        expect(question.title).to eq old_question.title
+        expect(question.body).to eq old_question.body
       end
 
       it 're-renders edit view' do
