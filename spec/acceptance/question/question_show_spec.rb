@@ -4,8 +4,9 @@ feature 'Show question and answers to it', %q{
   User can view the question and answers to it
 } do
 
-  given(:question) { create(:question) }
-  given(:answers) { create_list(:answer, 3, question: question) }
+  given(:user) { create(:user) }
+  given(:question) { create(:question, user: user) }
+  given(:answers) { create_list(:answer, 3, question: question, user: user) }
 
   scenario 'User can view the question and answers to it' do
     visit(question_path(question))

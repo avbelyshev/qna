@@ -4,7 +4,8 @@ feature 'Index questions', %q{
   User can view the list of questions
 } do
 
-  given!(:questions) { create_list(:question, 3) }
+  given(:user) { create(:user) }
+  given!(:questions) { create_list(:question, 3, user: user) }
 
   scenario 'User can view the list of questions' do
     visit questions_path
