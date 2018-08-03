@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Delete question', %q{
-  As a authenticate user
+  As an authenticated user
   I want to be able to delete my questions
 } do
 
@@ -9,7 +9,7 @@ feature 'Delete question', %q{
   given(:another_user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authenticate user tries to delete his question' do
+  scenario 'Authenticated user tries to delete his question' do
     sign_in(user)
 
     visit question_path(question)
@@ -19,7 +19,7 @@ feature 'Delete question', %q{
     expect(current_path).to eq questions_path
   end
 
-  scenario 'Authenticate user tries to delete not his question' do
+  scenario 'Authenticated user tries to delete not his question' do
     sign_in(another_user)
 
     visit question_path(question)

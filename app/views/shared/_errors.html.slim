@@ -1,0 +1,10 @@
+- errors = model.errors
+- if errors.any?
+  div
+    = 'You have '
+    = errors.count
+    = ' error(s):'
+  ul
+    - errors.full_messages.each do |message|
+      li
+        = message

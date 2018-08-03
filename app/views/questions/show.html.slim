@@ -6,12 +6,15 @@ p= @question.body
 
 ul.answers
   - @question.answers.each do |answer|
+    - next unless answer.persisted?
     li
-      p = answer.body
+      p= answer.body
     - if current_user&.author_of?(answer)
-      p= link_to 'Delete answer', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}
+      p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are you sure?'}
 
-= form_with model: [@question, @answer], local: true do |f|
-  = f.label :body
-  = f.text_area :body
-  = f.submit 'Reply'
+div
+  = form_for [@question, @answer], local: true do |f|
+    = render partial: 'shared/errors', locals: { model: @answer }
+    p= f.label :body
+    p= f.text_area :body
+    p= f.submit 'Reply'

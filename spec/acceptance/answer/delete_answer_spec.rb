@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Delete answer', %q{
-  As a authenticate user
+  As an authenticated user
   I want to be able to delete my answer
 } do
 
@@ -10,7 +10,7 @@ feature 'Delete answer', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authenticate user tries to delete his answer' do
+  scenario 'Authenticated user tries to delete his answer' do
     sign_in(user)
 
     visit question_path(question)
@@ -20,7 +20,7 @@ feature 'Delete answer', %q{
     expect(page).to_not have_content answer.body
   end
 
-  scenario 'Authenticate user tries to delete not his answer' do
+  scenario 'Authenticated user tries to delete not his answer' do
     sign_in(another_user)
 
     visit question_path(question)
