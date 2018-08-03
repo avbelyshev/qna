@@ -8,6 +8,8 @@ ul.answers
   - @question.answers.each do |answer|
     li
       p = answer.body
+    - if current_user&.author_of?(answer)
+      p= link_to 'Delete answer', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}
 
 = form_with model: [@question, @answer], local: true do |f|
   = f.label :body
