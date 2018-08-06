@@ -6,11 +6,11 @@ p= @question.body
 
 ul.answers
   - @question.answers.each do |answer|
-    - next unless answer.persisted?
-    li
-      p= answer.body
-    - if current_user&.author_of?(answer)
-      p= link_to 'Delete answer', question_answer_path(@question, answer), method: :delete, data: {confirm: 'Are you sure?'}
+    - if answer.persisted?
+      li
+        p= answer.body
+      - if current_user&.author_of?(answer)
+        p= link_to 'Delete answer', answer_path(answer), method: :delete, data: {confirm: 'Are you sure?'}
 
 div
   = form_for [@question, @answer], local: true do |f|

@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:create, :destroy]
+  before_action :find_question, only: :create
   before_action :find_answer, only: :destroy
 
   def create
@@ -16,14 +16,14 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    message = { notice: 'The answer is successfully deleted.' }
     if current_user.author_of?(@answer)
+      message = { notice: 'The answer is successfully deleted.' }
       @answer.destroy
     else
       message = { alert: 'You can not delete this answer.' }
     end
 
-    redirect_to @question, message
+    redirect_to @answer.question, message
   end
 
   private
@@ -33,7 +33,7 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = @question.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   def answer_params
