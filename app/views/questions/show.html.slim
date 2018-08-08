@@ -5,7 +5,7 @@ p= @question.body
   p= link_to 'Delete', question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }
 
 .answers
-  = render 'answers'
+  = render @question.answers
 
 .errors
 
