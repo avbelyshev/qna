@@ -58,7 +58,7 @@ group :test do
   gem 'rails-controller-testing'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15', '< 4.0'
-  gem 'selenium-webdriver'
+  # gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
   gem 'launchy'
@@ -70,4 +70,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
+  gem 'capybara-webkit'
 end
