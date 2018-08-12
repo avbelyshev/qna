@@ -42,20 +42,47 @@ RSpec.describe AnswersController, type: :controller do
 
     let!(:answer) { create(:answer, question: question, user: @user) }
 
-    it 'assigns the requested answer to @answer' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
-      expect(assigns(:answer)).to eq answer
+    context 'User tries to update his answer with valid attributes' do
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
+      end
     end
 
-    it 'changes answer attributes' do
-      patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
-      answer.reload
-      expect(answer.body).to eq 'new body'
+    context 'User tries to update his answer with invalid attributes' do
+      let(:old_answer) { answer }
+      before { patch :update, params: { id: answer, answer: { body: '' } }, format: :js}
+
+      it 'does not changes answer attributes' do
+        answer.reload
+        expect(answer.body).to eq old_answer.body
+      end
+
+      it 'renders update template' do
+        expect(response).to render_template :update
+      end
     end
 
-    it 'renders update template' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer) }, format: :js
-      expect(response).to render_template :update
+    context 'User tries to update not his answer' do
+      before { sign_in(create(:user)) }
+
+      it 'does not change answer attributes' do
+        old_body = answer.body
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq old_body
+      end
     end
   end
 
