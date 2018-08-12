@@ -13,22 +13,30 @@ feature 'Delete question', %q{
     sign_in(user)
 
     visit question_path(question)
-    click_on 'Delete'
 
+    within '.question' do
+      click_on 'Delete'
+
+      expect(current_path).to eq questions_path
+    end
     expect(page).to have_content 'The question is successfully deleted.'
-    expect(current_path).to eq questions_path
   end
 
   scenario 'Authenticated user tries to delete not his question' do
     sign_in(another_user)
 
     visit question_path(question)
-    expect(page).to_not have_link 'Delete'
+
+    within '.question' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
   scenario 'Non-authenticated user tries to delete question' do
     visit question_path(question)
 
-    expect(page).to_not have_link 'Delete'
+    within '.question' do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 end
