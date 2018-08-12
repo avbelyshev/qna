@@ -10,7 +10,7 @@ feature 'Delete answer', %q{
   given(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'Authenticated user tries to delete his answer' do
+  scenario 'Authenticated user tries to delete his answer', js: true do
     sign_in(user)
 
     visit question_path(question)
@@ -20,7 +20,6 @@ feature 'Delete answer', %q{
     end
 
     expect(page).to_not have_content answer.body
-    expect(page).to have_content 'The answer is successfully deleted.'
   end
 
   scenario 'Authenticated user tries to delete not his answer' do
