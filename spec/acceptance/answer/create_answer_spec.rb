@@ -17,7 +17,7 @@ feature 'Create answer', %q{
 
     expect(current_path).to eq question_path(question)
     within '.answers' do
-      expect(page).to have_content 'Answer'
+      expect(page).to have_content 'answer'
     end
   end
 
