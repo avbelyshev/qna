@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
   let(:question) { create(:question, user: user) }
+  let!(:answer) { create(:answer, question: question, user: user) }
 
   describe 'POST #create' do
     before { sign_in(user) }
@@ -38,9 +39,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    sign_in_user
-
-    let!(:answer) { create(:answer, question: question, user: @user) }
+    before { sign_in(user) }
 
     context 'User tries to update his answer with valid attributes' do
       it 'assigns the requested answer to @answer' do
@@ -86,20 +85,38 @@ RSpec.describe AnswersController, type: :controller do
     end
   end
 
+  describe 'PATCH #set_best' do
+    context 'User tries to choose answer for his question as the best' do
+      before { sign_in(user) }
+
+      it 'chooses the answer as the best' do
+        patch :set_best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer).to be_best
+      end
+    end
+
+    context 'User tries to choose answer for not his question as the best' do
+      before { sign_in(create(:user)) }
+
+      it 'does not chooses the answer as the best' do
+        patch :set_best, params: { id: answer }, format: :js
+        answer.reload
+        expect(answer).not_to be_best
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
-    sign_in_user
-
-    let!(:users_answer) { create(:answer, question: question, user: @user) }
-
     context 'User tries to delete his answer' do
-      before { users_answer }
+      before { sign_in(user) }
 
       it 'deletes answer' do
-        expect { delete :destroy, params: { id: users_answer }, format: :js }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(question.answers, :count).by(-1)
       end
 
       it 'render destroy template' do
-        delete :destroy, params: { id: users_answer }, format: :js
+        delete :destroy, params: { id: answer }, format: :js
         expect(response).to render_template :destroy
       end
     end
@@ -108,11 +125,11 @@ RSpec.describe AnswersController, type: :controller do
       before { sign_in(create(:user)) }
 
       it 'does not delete answer' do
-        expect { delete :destroy, params: { id: users_answer }, format: :js }.to_not change(question.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
       end
 
       it 'render destroy template' do
-        delete :destroy, params: { id: users_answer }, format: :js
+        delete :destroy, params: { id: answer }, format: :js
         expect(response).to render_template :destroy
       end
     end
