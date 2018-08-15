@@ -4,7 +4,7 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  default_scope { order(best: :desc, created_at: :desc) }
+  default_scope { order(best: :desc, created_at: :asc) }
 
   def set_best!
     best_answer = question.answers.find_by(best: true)

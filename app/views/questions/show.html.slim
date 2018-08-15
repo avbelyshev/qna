@@ -10,5 +10,5 @@ div
   = form_for [@question, @answer], remote: true do |f|
     = render partial: 'shared/errors', locals: { model: @answer }
     p= f.label :body, 'Your answer'
-    p= f.text_area :body
+    p= f.text_area :body, class: 'answer_text_area'
     p= f.submit 'Reply'
