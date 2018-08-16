@@ -8,5 +8,4 @@ ready = ->
     $(this).hide();
     $('form.edit_question').show();
 
-$(document).ready(ready);
 $(document).on('turbolinks:load', ready);
