@@ -16,4 +16,9 @@ div
     = render partial: 'shared/errors', locals: { model: @answer }
     p= f.label :body, 'Your answer'
     p= f.text_area :body, class: 'answer_text_area'
+    p Attachments:
+    p
+      = f.fields_for :attachments do |a|
+        = a.label :file
+        = a.file_field :file
     p= f.submit 'Reply'
