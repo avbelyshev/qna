@@ -1,5 +1,8 @@
 = render @question
 
+.question_attachments
+  = render 'attachments/list', resource: @question
+
 h3= 'Answers:'
 .answers
   = render @question.answers
@@ -11,4 +14,9 @@ div
     = render partial: 'shared/errors', locals: { model: @answer }
     p= f.label :body, 'Your answer'
     p= f.text_area :body, class: 'answer_text_area'
+    p Attachments:
+    .attachments
+      = f.fields_for :attachments do |a|
+        = render 'attachments/fields', f: a
+        = link_to_add_association 'Attach file', f, :attachments, partial: 'attachments/fields'
     p= f.submit 'Reply'
