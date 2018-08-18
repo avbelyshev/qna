@@ -1,9 +1,7 @@
 = render @question
 
-h3= 'Attachments:'
-ul
-  - @question.attachments.each do |a|
-    li= link_to a.file.identifier, a.file.url
+.question_attachments
+  = render 'attachments/list', resource: @question
 
 h3= 'Answers:'
 .answers

@@ -63,6 +63,5 @@ ActiveRecord::Schema.define(version: 2018_08_16_224947) do
 
   add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
-  add_foreign_key "attachments", "questions", column: "attachable_id"
   add_foreign_key "questions", "users"
 end

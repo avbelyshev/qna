@@ -1,10 +1,10 @@
 - if answer.persisted?
   div class="answer_#{answer.id}"
     p= "#{answer.body}#{answer.best? ? ' (Best answer)' : ''}"
-    h3= 'Attachments:'
-    ul
-      - answer.attachments.each do |a|
-        li= link_to a.file.identifier, a.file.url
+
+    .answer_attachments
+      = render 'attachments/list', resource: answer
+
     - if current_user&.author_of?(answer.question) && !answer.best?
       => link_to 'Choose as the best', set_best_answer_url(answer), method: :patch, remote: true
     - if current_user&.author_of?(answer)
