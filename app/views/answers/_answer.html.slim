@@ -5,6 +5,9 @@
     .answer_attachments
       = render 'attachments/list', resource: answer
 
+    .answer_rating
+      = render 'votes/rating', resource: answer
+
     - if current_user&.author_of?(answer.question) && !answer.best?
       => link_to 'Choose as the best', set_best_answer_url(answer), method: :patch, remote: true
     - if current_user&.author_of?(answer)
