@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :answer do
-    question nil
+    user
+    question
     sequence(:body) { |n| "AnswerBody#{n}" }
   end
 

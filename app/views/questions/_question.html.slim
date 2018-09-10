@@ -2,6 +2,12 @@ div class="question"
   h3= @question.title
   p= @question.body
 
+  .question_attachments
+    = render 'attachments/list', resource: @question
+
+  .question_rating
+    = render 'votes/rating', resource: @question
+
   - if current_user&.author_of?(@question)
     => link_to 'Edit', '', class: 'edit-question-link'
     = form_for question, remote: true do |f|

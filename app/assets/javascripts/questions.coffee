@@ -8,4 +8,9 @@ ready = ->
     $(this).hide();
     $('form.edit_question').show();
 
+  $('.vote_link').on 'ajax:success', (e) ->
+    response = e.detail[0];
+    rating = $('.question_rating').find('.rating');
+    rating.html(response.rating);
+
 $(document).on('turbolinks:load', ready);
