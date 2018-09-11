@@ -18,6 +18,7 @@ feature 'Vote for answer', %q{
       within ".answer_#{answer.id}" do
         within '.answer_rating' do
           click_on 'like'
+          sleep 1
           within '.rating' do
             expect(page).to have_content answer.rating
           end
@@ -30,6 +31,7 @@ feature 'Vote for answer', %q{
       within ".answer_#{answer.id}" do
         within '.answer_rating' do
           click_on 'dislike'
+          sleep 1
           within '.rating' do
             expect(page).to have_content answer.rating
           end
@@ -42,7 +44,9 @@ feature 'Vote for answer', %q{
       within ".answer_#{answer.id}" do
         within '.answer_rating' do
           click_on 'like'
+          sleep 1
           click_on 'cancel vote'
+          sleep 1
           within '.rating' do
             expect(page).to have_content answer.rating
           end
