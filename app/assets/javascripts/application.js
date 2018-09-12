@@ -16,6 +16,7 @@
 //= require turbolinks
 //= require jquery
 //= require cocoon
+//= require skim
 //= require_tree .
 
 var App = App || {};
