@@ -2,8 +2,9 @@ div class="question"
   h3= @question.title
   p= @question.body
 
-  .question_attachments
-    = render 'attachments/list', resource: @question
+  - if @question.attachments.any?
+    .question_attachments
+      = render 'attachments/list', resource: @question
 
   .question_rating
     = render 'votes/rating', resource: @question

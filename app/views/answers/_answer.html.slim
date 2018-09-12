@@ -2,8 +2,9 @@
   div class="answer_#{answer.id}"
     p= "#{answer.body}#{answer.best? ? ' (Best answer)' : ''}"
 
-    .answer_attachments
-      = render 'attachments/list', resource: answer
+    - if answer.attachments.any?
+      .answer_attachments
+        = render 'attachments/list', resource: answer
 
     .answer_rating
       = render 'votes/rating', resource: answer
