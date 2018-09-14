@@ -1,0 +1,25 @@
+div class="answer_#{@answer.id}"
+  - best_answer = ''
+  - best_answer = ' (Best answer)' if @answer.best == true
+  p= "#{@answer.body}#{best_answer}"
+
+  - if @attachments.length
+    .answer_attachments
+      h3= 'Attachments:'
+      ul
+        - @attachments.forEach (a) ->
+          li class="attachment-#{a.id}"
+            a href="#{a.file.url}" = a.file.url.split("/").pop()
+
+  .answer_rating
+    => "Rating:"
+    span.rating=> @rating
+    - if gon.user_id && !(gon.user_id == @answer.user_id)
+      a href="/answers/#{@answer.id}/set_like" class="vote_link" data-method="patch" data-remote="true" data-type="json" like
+      '
+      a href="/answers/#{@answer.id}/set_dislike" class="vote_link" data-method="patch" data-remote="true" data-type="json" dislike
+      '
+      a href="/answers/#{@answer.id}/cancel_vote" class="vote_link" data-method="patch" data-remote="true" data-type="json" cancel vote
+
+  - if (gon.user_id == gon.question_user_id) && !@answer.best
+    a href="/answers/#{@answer.id}/set_best" data-method="patch" data-remote="true" Choose as the best
