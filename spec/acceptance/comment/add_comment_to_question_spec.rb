@@ -40,4 +40,32 @@ feature 'Add comment to question', %q{
       expect(page).to_not have_link 'Add comment'
     end
   end
+
+  context 'multiple sessions' do
+    scenario 'comment appears on another user\'s page', js: true do
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.question_comments' do
+          click_on 'Add comment'
+          fill_in 'Comment', with: 'New comment'
+          click_on 'Comment'
+          expect(page).to have_content 'New comment'
+        end
+      end
+
+      Capybara.using_session('guest') do
+        within '.question_comments' do
+          expect(page).to have_content 'New comment'
+        end
+      end
+    end
+  end
 end
