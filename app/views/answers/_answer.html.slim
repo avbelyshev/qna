@@ -14,7 +14,16 @@
     - if current_user&.author_of?(answer)
       => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+        span.errors
         p= f.label :body, 'Answer'
         p= f.text_area :body
         p= f.submit 'Save'
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true, data: {confirm: 'Are you sure?'}
+
+    .answer_comments
+      - if user_signed_in?
+        => link_to 'Add comment', '', class: 'add-comment-link', data: {resource_id: answer.id, resource_type: 'answer'}
+        = render 'comments/form', resource: answer
+      - if answer.comments.size > 1
+        h4= 'Comments:'
+        = render answer.comments

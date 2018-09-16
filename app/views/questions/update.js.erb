@@ -1,2 +1,6 @@
-$('.errors').html('<%= j render partial: 'shared/errors', locals: { model: @question } %>');
-$('.question').html('<%= j render @question %>');
+<% if @question&.errors.present? %>
+  errors = $('form.edit_question').find('.errors');
+  errors.html('<%= j render partial: 'shared/errors', locals: { model: @question } %>');
+<% else %>
+  $('.question').html('<%= j render @question %>');
+<% end %>
