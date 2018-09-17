@@ -49,27 +49,27 @@ shared_examples_for 'voted' do
         expect(response.header['Content-Type']).to include 'application/json'
       end
     end
+  end
 
-    describe 'PATCH #cancel_vote' do
-      it 'deletes resource\'s vote from the database' do
+  describe 'PATCH #cancel_vote' do
+    it 'deletes resource\'s vote from the database' do
+      patch :set_like, params: { id: resource.id, format: :json }
+      expect { patch :cancel_vote, params: { id: resource.id } }.to change(resource.votes, :count).by(-1)
+    end
+
+    context 'response' do
+      it 'gets success json response' do
         patch :set_like, params: { id: resource.id, format: :json }
-        expect { patch :cancel_vote, params: { id: resource.id } }.to change(resource.votes, :count).by(-1)
+        patch :cancel_vote, params: { id: resource.id, format: :json }
+        expect(response.status).to eq 200
+        expect(response.header['Content-Type']).to include 'application/json'
+        expect(response.body).to eq "{\"id\":#{resource.id},\"rating\":0}"
       end
 
-      context 'response' do
-        it 'gets success json response' do
-          patch :set_like, params: { id: resource.id, format: :json }
-          patch :cancel_vote, params: { id: resource.id, format: :json }
-          expect(response.status).to eq 200
-          expect(response.header['Content-Type']).to include 'application/json'
-          expect(response.body).to eq "{\"id\":#{resource.id},\"rating\":0}"
-        end
-
-        it 'returns forbidden status if resource don\'t have votes' do
-          patch :cancel_vote, params: { id: resource.id, format: :json }
-          expect(response.status).to eq 403
-          expect(response.header['Content-Type']).to include 'application/json'
-        end
+      it 'returns forbidden status if resource don\'t have votes' do
+        patch :cancel_vote, params: { id: resource.id, format: :json }
+        expect(response.status).to eq 403
+        expect(response.header['Content-Type']).to include 'application/json'
       end
     end
   end

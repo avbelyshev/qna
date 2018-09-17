@@ -13,4 +13,12 @@ ready = ->
     rating = $('.question_rating').find('.rating');
     rating.html(response.rating);
 
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      @perform 'follow'
+    ,
+    received: (data) ->
+      $('.questions_list').append data
+  });
+
 $(document).on('turbolinks:load', ready);

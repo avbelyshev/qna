@@ -1,9 +1,10 @@
-div class="question"
+.question
   h3= @question.title
   p= @question.body
 
-  .question_attachments
-    = render 'attachments/list', resource: @question
+  - if @question.attachments.any?
+    .question_attachments
+      = render 'attachments/list', resource: @question
 
   .question_rating
     = render 'votes/rating', resource: @question
@@ -11,6 +12,7 @@ div class="question"
   - if current_user&.author_of?(@question)
     => link_to 'Edit', '', class: 'edit-question-link'
     = form_for question, remote: true do |f|
+      span.errors
       p= f.label :title
       p= f.text_field :title
       p= f.label :body

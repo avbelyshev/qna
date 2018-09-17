@@ -1,0 +1,12 @@
+.answer_form
+  = form_for [@question, @answer], remote: true do |f|
+    #= render partial: 'shared/errors', locals: { model: @answer }
+    span.new_answer_errors
+    p= f.label :body, 'Your answer'
+    p= f.text_area :body, class: 'answer_text_area'
+    p Attachments:
+    .attachments
+      = f.fields_for :attachments do |a|
+        = render 'attachments/fields', f: a
+        = link_to_add_association 'Attach file', f, :attachments, partial: 'attachments/fields'
+    p= f.submit 'Reply'

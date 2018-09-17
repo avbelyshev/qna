@@ -1,19 +1,17 @@
 = render @question
 
-h3= 'Answers:'
-.answers
-  = render @question.answers
+.question_comments
+  - if user_signed_in?
+    = link_to 'Add comment', '', class: 'add-comment-link', data: {resource_id: @question.id, resource_type: 'question'}
+    = render 'comments/form', resource: @question
 
-.errors
+  - if @question.comments.size > 1
+    h4= 'Comments:'
+    = render @question.comments
 
-div
-  = form_for [@question, @answer], remote: true do |f|
-    = render partial: 'shared/errors', locals: { model: @answer }
-    p= f.label :body, 'Your answer'
-    p= f.text_area :body, class: 'answer_text_area'
-    p Attachments:
-    .attachments
-      = f.fields_for :attachments do |a|
-        = render 'attachments/fields', f: a
-        = link_to_add_association 'Attach file', f, :attachments, partial: 'attachments/fields'
-    p= f.submit 'Reply'
+- if @question.answers.any?
+  h3= 'Answers:'
+  .answers
+    = render @question.answers
+
+  = render 'answers/form'

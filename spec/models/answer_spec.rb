@@ -6,6 +6,7 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of :body }
   it_behaves_like 'attachable'
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
 
   describe '#set_best!' do
     let(:user) { create(:user) }

@@ -1,9 +1,6 @@
 h1 Questions list
-ul.questions
+.questions_list
   - @questions.each do |q|
-    li
-      p= link_to q.title, question_path(q)
-      p= q.body
-      p= "rating #{q.rating}"
+    = render 'questions_item', question: q
 
 p= link_to 'Ask question', new_question_path
