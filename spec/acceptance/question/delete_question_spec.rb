@@ -19,7 +19,7 @@ feature 'Delete question', %q{
 
       expect(current_path).to eq questions_path
     end
-    expect(page).to have_content 'The question is successfully deleted.'
+    expect(page).to have_content 'Question was successfully destroyed.'
   end
 
   scenario 'Authenticated user tries to delete not his question' do
