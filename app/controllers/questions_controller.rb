@@ -3,43 +3,34 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
+  before_action :build_answer, only: :show
   after_action :publish_question, only: :create
 
+  respond_to :html, :js
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.new
-    @answer.attachments.new
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.new
+    respond_with(@question = current_user.questions.new)
   end
 
   def create
-    @question = current_user.questions.new(question_params)
-
-    if @question.save
-      redirect_to @question, notice: 'Your question successfully created.'
-    else
-      render :new
-    end
+    respond_with(@question = current_user.questions.create(question_params))
   end
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
+    respond_with @question
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'The question is successfully deleted.'
-    else
-      redirect_to @question, alert: 'You can not delete this question.'
-    end
+    respond_with(@question.destroy) if current_user.author_of?(@question)
   end
 
   private
@@ -52,6 +43,10 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file, :id, :_destroy])
+  end
+
+  def build_answer
+    @answer = @question.answers.new
   end
 
   def publish_question
