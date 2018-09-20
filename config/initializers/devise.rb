@@ -262,6 +262,11 @@ Devise.setup do |config|
                   Rails.application.credentials.vkontakte[:app_secret],
                   scope: [:email]
 
+  config.omniauth :github,
+                  Rails.application.credentials.github[:app_id],
+                  Rails.application.credentials.github[:app_secret],
+                  scope: [:email]
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
