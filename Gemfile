@@ -46,6 +46,7 @@ gem 'responders'
 gem 'omniauth'
 gem 'omniauth-vkontakte'
 gem 'omniauth-github'
+gem 'cancancan'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
