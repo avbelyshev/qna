@@ -33,10 +33,9 @@ feature 'Create answer', %q{
 
   scenario 'Non-authenticated user tries to create answer' do
     visit question_path(question)
-    fill_in 'Your answer', with: 'Answer'
-    click_on 'Reply'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_content 'Your answer'
+    expect(page).to_not have_link 'Reply'
   end
 
   context 'multiple sessions' do

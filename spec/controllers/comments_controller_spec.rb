@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CommentsController, type: :controller do
   let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let!(:comment) { create(:comment, commentable: question, user: user) }
 
@@ -74,11 +75,11 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'User tries to update not his comment' do
-      before { sign_in(create(:user)) }
+      before { sign_in(another_user) }
 
-      it 'does not change answer attributes' do
+      it 'does not change comment attributes' do
         old_body = comment.body
-        patch :update, params: { id: comment, answer: { body: 'new body' } }, format: :js
+        patch :update, params: { id: comment, comment: { body: 'new body' } }, format: :js
         comment.reload
         expect(comment.body).to eq old_body
       end
@@ -100,7 +101,7 @@ RSpec.describe CommentsController, type: :controller do
     end
 
     context 'User tries to delete not his comment' do
-      before { sign_in(create(:user)) }
+      before { sign_in(another_user) }
 
       it 'does not delete comment' do
         expect { delete :destroy, params: { id: comment }, format: :js }.to_not change(question.comments, :count)

@@ -9,19 +9,20 @@
     .answer_rating
       = render 'votes/rating', resource: answer
 
-    - if current_user&.author_of?(answer.question) && !answer.best?
+    - if can? :set_best, answer
       => link_to 'Choose as the best', set_best_answer_url(answer), method: :patch, remote: true
-    - if current_user&.author_of?(answer)
+    - if can? :update, answer
       => link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
       = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
         span.errors
         p= f.label :body, 'Answer'
         p= f.text_area :body
         p= f.submit 'Save'
+    - if can? :destroy, answer
       = link_to 'Delete', answer_path(answer), method: :delete, remote: true, data: {confirm: 'Are you sure?'}
 
     .answer_comments
-      - if user_signed_in?
+      - if can? :create, Comment
         => link_to 'Add comment', '', class: 'add-comment-link', data: {resource_id: answer.id, resource_type: 'answer'}
         = render 'comments/form', resource: answer
       - if answer.comments.size > 1

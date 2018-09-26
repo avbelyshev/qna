@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:user) { create(:user) }
+  let(:another_user) { create(:user) }
   let(:question) { create(:question, user: user) }
   let!(:answer) { create(:answer, question: question, user: user) }
 
@@ -76,7 +77,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'User tries to update not his answer' do
-      before { sign_in(create(:user)) }
+      before { sign_in(another_user) }
 
       it 'does not change answer attributes' do
         old_body = answer.body
@@ -99,7 +100,7 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'User tries to choose answer for not his question as the best' do
-      before { sign_in(create(:user)) }
+      before { sign_in(another_user) }
 
       it 'does not chooses the answer as the best' do
         patch :set_best, params: { id: answer }, format: :js
@@ -124,15 +125,10 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'User tries to delete not his answer' do
-      before { sign_in(create(:user)) }
+      before { sign_in(another_user) }
 
       it 'does not delete answer' do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(question.answers, :count)
-      end
-
-      it 'render destroy template' do
-        delete :destroy, params: { id: answer }, format: :js
-        expect(response).to render_template :destroy
       end
     end
   end
