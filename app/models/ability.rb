@@ -28,11 +28,11 @@ class Ability
     can :destroy, Attachment, attachable: { user_id: user.id }
     can :set_best, Answer, best: false, question: { user_id: user.id }
 
-    can [:set_like, :set_dislike], Votable do |votable|
+    can [:set_like, :set_dislike], [Question, Answer] do |votable|
       !user.author_of?(votable) && !votable.votes.exists?(user_id: user.id)
     end
 
-    can :cancel_vote, Votable do |votable|
+    can :cancel_vote, [Question, Answer] do |votable|
       votable.votes.exists?(user_id: user.id)
     end
   end
