@@ -1,4 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  skip_authorization_check
+
   def vkontakte
     sign_in_with('Vkontakte')
   end

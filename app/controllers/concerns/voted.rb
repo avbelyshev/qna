@@ -3,6 +3,7 @@ module Voted
 
   included do
     before_action :find_resource, only: [:set_like, :set_dislike, :cancel_vote]
+    authorize_resource only: [:set_like, :set_dislike, :cancel_vote]
   end
 
   def set_like

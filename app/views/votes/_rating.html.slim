@@ -1,6 +1,6 @@
 => "Rating:"
 span.rating=> resource.rating
-- if current_user && !current_user&.author_of?(resource)
+- if can?(:set_like, resource) || can?(:set_dislike, resource) || can?(:cancel_vote, resource)
   => link_to 'like', polymorphic_path(resource, action: :set_like), class: 'vote_link', method: :patch, remote: true, data: { type: :json }
   => link_to 'dislike', polymorphic_path(resource, action: :set_dislike), class: 'vote_link', method: :patch, remote: true, data: { type: :json }
   = link_to 'cancel vote', polymorphic_path(resource, action: :cancel_vote), class: 'vote_link', method: :patch, remote: true, data: { type: :json }
