@@ -1,4 +1,4 @@
-class CommentsController < ActionController::Base
+class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_resource, only: :create
   before_action :find_comment, only: [:update, :destroy]
