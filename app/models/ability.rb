@@ -35,5 +35,7 @@ class Ability
     can :cancel_vote, [Question, Answer] do |votable|
       votable.votes.exists?(user_id: user.id)
     end
+
+    can :me, User, id: user.id
   end
 end

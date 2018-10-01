@@ -47,6 +47,7 @@ gem 'omniauth'
 gem 'omniauth-vkontakte'
 gem 'omniauth-github'
 gem 'cancancan'
+gem 'doorkeeper', '4.2.6'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -72,6 +73,7 @@ group :test do
   gem 'chromedriver-helper'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'json_spec'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
