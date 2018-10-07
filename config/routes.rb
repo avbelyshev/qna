@@ -33,7 +33,9 @@ Rails.application.routes.draw do
       resources :profiles, only: :index do
         get :me, on: :collection
       end
-      resources :questions, only: :index
+      resources :questions, only: [:index, :show] do
+        resources :answers, only: [:index, :show], shallow: true
+      end
     end
   end
 end
