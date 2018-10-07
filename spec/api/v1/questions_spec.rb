@@ -122,4 +122,48 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    context 'unauthorized' do
+      it 'returns 401 status if there is no access token' do
+        post '/api/v1/questions', params: { format: :json }
+        expect(response.status).to eq 401
+      end
+
+      it 'returns 401 status if access token is invalid' do
+        post '/api/v1/questions/', params: { format: :json, access_token: '1234' }
+        expect(response.status).to eq 401
+      end
+    end
+
+    context 'authorized' do
+      let(:user) { User.find(access_token.resource_owner_id) }
+
+      context 'with valid attributes' do
+        let(:post_question) { post '/api/v1/questions', params: { question: attributes_for(:question), format: :json, access_token: access_token.token } }
+
+        it 'returns 201 status code' do
+          post_question
+          expect(response).to be_successful
+        end
+
+        it 'saves a new user\'s question in the database' do
+          expect { post_question }.to change(user.questions, :count).by(1)
+        end
+      end
+
+      context 'with invalid attributes' do
+        let(:post_invalid_question) { post '/api/v1/questions', params: { question: attributes_for(:invalid_question), format: :json, access_token: access_token.token } }
+
+        it 'returns 422 status code' do
+          post_invalid_question
+          expect(response.status).to eq 422
+        end
+
+        it 'does not save the question' do
+          expect { post_invalid_question }.to_not change(Question, :count)
+        end
+      end
+    end
+  end
 end
