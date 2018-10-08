@@ -1,6 +1,5 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
   before_action :load_question, only: :show
-  skip_before_action :verify_authenticity_token, only: :create
 
   authorize_resource
 
