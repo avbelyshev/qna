@@ -8,4 +8,6 @@ class Question < ApplicationRecord
 
 
   validates :title, :body, presence: true
+
+  scope :by_last_day, -> { where('created_at >= ?', 1.day.ago) }
 end
