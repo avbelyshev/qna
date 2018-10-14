@@ -5,7 +5,8 @@ class Question < ApplicationRecord
 
   belongs_to :user
   has_many :answers, dependent: :destroy
-
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user
 
   validates :title, :body, presence: true
 
