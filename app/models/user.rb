@@ -41,4 +41,8 @@ class User < ApplicationRecord
       DailyMailer.digest(user).deliver_later
     end
   end
+
+  def subscribed?(question)
+    self.subscriptions.exists?(question: question.id)
+  end
 end

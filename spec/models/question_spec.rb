@@ -10,4 +10,14 @@ RSpec.describe Question, type: :model do
   it_behaves_like 'attachable'
   it_behaves_like 'votable'
   it_behaves_like 'commentable'
+
+  describe '#subscribe_author' do
+    let!(:user) { create(:user) }
+    let!(:question) { create(:question, user: user) }
+
+    it 'should creates subscribe author-question' do
+      expect(user.subscriptions.count).to eq 1
+      expect(question.subscriptions.count).to eq 1
+    end
+  end
 end

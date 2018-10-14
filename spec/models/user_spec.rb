@@ -96,4 +96,18 @@ RSpec.describe User do
       User.send_daily_digest
     end
   end
+
+  describe '#subscribed?' do
+    let!(:user) { create(:user) }
+    let!(:another_user) { create(:user) }
+    let!(:subscription) { create(:subscription, user: user)}
+
+    it 'Returns true if user subscribed to question' do
+      expect(user).to be_subscribed(subscription.question)
+    end
+
+    it 'Returns false if user not subscribed to question' do
+      expect(another_user).to_not be_subscribed(subscription.question)
+    end
+  end
 end
