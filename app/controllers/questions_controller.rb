@@ -3,6 +3,7 @@ class QuestionsController < ApplicationController
 
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
+  before_action :load_subscription, only: [:show, :update]
   before_action :build_answer, only: :show
   after_action :publish_question, only: :create
 
@@ -41,6 +42,10 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
     gon.question_id = @question.id
     gon.question_user_id = @question.user_id
+  end
+
+  def load_subscription
+    @subscription = @question.subscriptions.find_by(user: current_user)
   end
 
   def question_params

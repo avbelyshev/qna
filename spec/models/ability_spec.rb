@@ -27,6 +27,8 @@ RSpec.describe Ability, type: :model do
     let(:another_comment) { create(:comment, commentable: question, user: another_user)  }
     let(:attachment) { create(:attachment, attachable: question) }
     let(:another_attachment) { create(:attachment, attachable: another_question) }
+    let(:subscription) { create(:subscription, user: user) }
+    let(:another_subscription) { create(:subscription, user: another_user) }
 
     it { should be_able_to :read, :all }
     it { should_not be_able_to :manage, :all }
@@ -35,6 +37,7 @@ RSpec.describe Ability, type: :model do
       it { should be_able_to :create, Question }
       it { should be_able_to :create, Answer }
       it { should be_able_to :create, Comment }
+      it { should be_able_to :create, Subscription }
     end
 
     context 'update' do
@@ -51,10 +54,12 @@ RSpec.describe Ability, type: :model do
       it { should be_able_to :destroy, answer }
       it { should be_able_to :destroy, comment }
       it { should be_able_to :destroy, attachment }
+      it { should be_able_to :destroy, subscription }
       it { should_not be_able_to :destroy, another_question }
       it { should_not be_able_to :destroy, another_answer }
       it { should_not be_able_to :destroy, another_comment }
       it { should_not be_able_to :destroy, another_attachment }
+      it { should_not be_able_to :destroy, another_subscription }
     end
 
     context 'set best answer' do

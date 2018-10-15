@@ -6,12 +6,12 @@ RSpec.describe User do
   it { should have_many(:votes) }
   it { should have_many(:comments) }
   it { should have_many(:authorizations) }
+  it { should have_many(:subscriptions) }
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
-  let!(:user) { create(:user) }
-
   describe '#author_of?' do
+    let(:user) { create(:user) }
     let(:another_user) { create(:user) }
     let(:resource) { create(:question, user: user) }
 
@@ -25,6 +25,7 @@ RSpec.describe User do
   end
 
   describe '.find_for_oauth' do
+    let!(:user) { create(:user) }
     let(:auth) { OmniAuth::AuthHash.new(provider: 'vkontakte', uid: '123456') }
 
     context 'user already has authorization' do
@@ -84,6 +85,29 @@ RSpec.describe User do
           expect(authorization.uid).to eq auth.uid
         end
       end
+    end
+  end
+
+  describe '.send_daily_digest' do
+    let(:users) { create_list(:user, 2) }
+
+    it 'should send daily digest to all users' do
+      users.each { |user| expect(DailyMailer).to receive(:digest).with(user).and_call_original }
+      User.send_daily_digest
+    end
+  end
+
+  describe '#subscribed?' do
+    let!(:user) { create(:user) }
+    let!(:another_user) { create(:user) }
+    let!(:subscription) { create(:subscription, user: user)}
+
+    it 'Returns true if user subscribed to question' do
+      expect(user).to be_subscribed(subscription.question)
+    end
+
+    it 'Returns false if user not subscribed to question' do
+      expect(another_user).to_not be_subscribed(subscription.question)
     end
   end
 end
