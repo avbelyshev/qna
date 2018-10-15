@@ -43,6 +43,6 @@ class User < ApplicationRecord
   end
 
   def subscribed?(question)
-    self.subscriptions.exists?(question: question.id)
+    self.subscriptions.exists?(question: question)
   end
 end
