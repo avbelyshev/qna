@@ -8,6 +8,7 @@ RSpec.configure do |config|
   OmniAuth.config.test_mode = true
 
   config.include AcceptanceHelper, type: :feature
+  config.include SphinxHelpers, type: :feature
 
   config.use_transactional_fixtures = false
 
