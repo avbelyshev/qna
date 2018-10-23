@@ -7,6 +7,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'cancan/matchers'
 require 'sidekiq/testing'
+require 'thinking_sphinx/test'
 
 Sidekiq::Testing.fake!
 
