@@ -1,18 +1,19 @@
-= render @question
+- cache @question do
+  = render @question
 
-.question_comments
-  - if can? :create, Comment
-    = link_to 'Add comment', '', class: 'add-comment-link', data: {resource_id: @question.id, resource_type: 'question'}
-    = render 'comments/form', resource: @question
+  .question_comments
+    - if can? :create, Comment
+      = link_to 'Add comment', '', class: 'add-comment-link', data: {resource_id: @question.id, resource_type: 'question'}
+      = render 'comments/form', resource: @question
 
-  - if @question.comments.size > 1
-    h4= 'Comments:'
-    = render @question.comments
+    - if @question.comments.size > 1
+      h4= 'Comments:'
+      = render @question.comments
 
-- if @question.answers.any?
-  h3= 'Answers:'
-  .answers
-    = render @question.answers
+  - if @question.answers.any?
+    h3= 'Answers:'
+    .answers
+      = render @question.answers
 
 - if can? :create, Answer
   = render 'answers/form'
